@@ -32,7 +32,7 @@ jobs:
     - name: Java JDK Kurulumu
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'zulu'
 
     - name: APK'yi Derle (Build)
