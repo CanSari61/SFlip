@@ -29,6 +29,19 @@ jobs:
     - name: Android Platformunu Ekle
       run: npx cap add android
 
+    - name: Kotlin Cakismazlik (Duplicate Class) Hata Cozumu
+      run: |
+        cat <<EOF >> android/app/build.gradle
+        
+        configurations.all {
+            resolutionStrategy {
+                force "org.jetbrains.kotlin:kotlin-stdlib:1.9.20"
+                force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20"
+                force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20"
+            }
+        }
+        EOF
+
     - name: Java JDK Kurulumu
       uses: actions/setup-java@v4
       with:
