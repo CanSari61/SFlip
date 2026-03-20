@@ -1,0 +1,47 @@
+name: SFlip APK Uretici
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Kodlari Al
+      uses: actions/checkout@v4
+
+    - name: Node.js Kurulumu
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Oyun Klasorunu Hazirla ve Motoru Kur
+      run: |
+        mkdir www
+        cp index.html www/
+        npm init -y
+        npm install @capacitor/core @capacitor/cli @capacitor/android
+        npx cap init SFlip com.sflip.game --web-dir www
+
+    - name: Android Platformunu Ekle
+      run: npx cap add android
+
+    - name: Java JDK Kurulumu
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'zulu'
+
+    - name: APK'yi Derle (Build)
+      run: |
+        cd android
+        ./gradlew assembleDebug
+
+    - name: APK'yi Indirmeye Hazirla
+      uses: actions/upload-artifact@v4
+      with:
+        name: SFlip-Android-APK
+        path: android/app/build/outputs/apk/debug/app-debug.apk
